@@ -27,8 +27,8 @@ defines
 #define OSRAM_A0      47
 */
 
-#define MAX_ADDRES_PINS         5
-#define MAX_DATA_PINS           8
+#define MAX_ADDR_PINS         5
+#define MAX_DATA_PINS         8
                                      // D0  ......                  D7
 const byte DATA_PINS[MAX_DATA_PINS] = { 22, 23, 24, 25, 26, 27, 28, 29 };
                                     //  A0  .....       A4
