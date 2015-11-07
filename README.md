@@ -34,3 +34,19 @@ In mere minutes, I had a PWM signal outputting a nice fade on an LED.  This woul
 The IDE lacks a lot of polish, but then I suppose that’s not unintentional.  IDEs are precisely where a lot of engineers get cranky (see above), and IDEs are not the point of hardware design.
 
 So I don’t have much to update for my project, but this little stepping stone is encouraging and enlightening.  Get it?  Englightening?
+
+
+http://www.electrolund.com/2015/11/day-6-early-firmware-testing/
+
+November 6
+
+Things are progressing nicely.  I have the display fully wired now to the Mega.  It’s a spaghetti mess, but it’ll work.
+I have the serial port on the Arduino working nicely for debug.  I also did a fair amount of thinking with regards to data and address packetizing.  It quickly became apparent that doing a bunch of digitalWrite calls for all this pins (8 data, 5 address, per character of the display) would be a nightmare.
+
+Here is the character map for the display.
+
+ipd2131 ASCII chart
+encoded character map
+So I came up with a character array method to do this.  I tested tonight with the serial port debugger to verify correct character parsing.
+
+So far so good.
