@@ -38,6 +38,7 @@ by Rob Lund
 const byte DATA_PINS[MAX_DATA_PINS] = { 22, 23, 24, 25, 26, 27, 28, 29 };
 												//  A0  .....       A4
 const byte ADDR_PINS[MAX_ADDR_PINS] = { 47, 48, 49, 50, 51 };
+const byte FL =	52;
 
 // incoming serial byte
 byte inByte = 0;
@@ -82,6 +83,42 @@ void loop()
 	delay(1000);              // wait for a second
 
 
+
+	digitalWrite(FL, HIGH);
+
+	// start with 1st digit:
+	AddressBusWrite(0b11111000);
+
+	// now some junk ASCII data
+	DataBusWrite(37);
+
+	delay(500);
+
+	// start with 1st digit:
+	AddressBusWrite(0b11111001);
+
+	// now some junk ASCII data
+	DataBusWrite(39);	
+
+	delay(500);
+
+	// start with 1st digit:
+	AddressBusWrite(0b11111000);
+	
+	// now some junk ASCII data
+	DataBusWrite(39);		
+
+	delay(500);
+
+	// start with 1st digit:
+	AddressBusWrite(0b11111001);
+
+	// now some junk ASCII data
+	DataBusWrite(37);
+
+	delay(500);
+
+#if 0
   // if we get a valid byte, format it (TEST)
 	if (Serial.available() > 0)
 	{
@@ -94,6 +131,9 @@ void loop()
 			DataBusWrite(inByte);
 		}
 	}
+
+#endif
+	
 }
 
 
