@@ -17,19 +17,8 @@ by Rob Lund
 //-------------
 #define LEDFADER      13
 
-/*
-#define OSRAM_RESET   53
-#define OSRAM_FL      52
-#define OSRAM_A4      51
-#define OSRAM_A3      50
-#define OSRAM_A2      49
-#define OSRAM_A1      48
-#define OSRAM_A0      47
-*/
-
 #define MAX_ADDR_PINS         5
 #define MAX_DATA_PINS         8
-
 
 //-------------
 // globals
@@ -39,9 +28,14 @@ const byte DATA_PINS[MAX_DATA_PINS] = { 22, 23, 24, 25, 26, 27, 28, 29 };
 												//  A0  .....       A4
 const byte ADDR_PINS[MAX_ADDR_PINS] = { 47, 48, 49, 50, 51 };
 const byte FL =	52;
+const byte RST =	53;
 
 // incoming serial byte
 byte inByte = 0;
+
+// address counter (must only use A0-A2)
+#define BASE_ADDRESS		0b11111000
+byte address;
 
 // the setup function runs once when you press reset or power the board
 void setup()
@@ -58,67 +52,59 @@ void setup()
 	// prints title with ending line break
 	Serial.println(">>>>>>>> OsRAM intelligent LED display <<<<<<<<");
 
-	// heartbeat setup
-	pinMode(LEDFADER, OUTPUT);
-	/*
-	pinMode(OSRAM_RESET, OUTPUT);
-	pinMode(OSRAM_FL, OUTPUT);
-	pinMode(OSRAM_A4, OUTPUT);
-	pinMode(OSRAM_A3, OUTPUT);
-	pinMode(OSRAM_A2, OUTPUT);
-	pinMode(OSRAM_A1, OUTPUT);
-	pinMode(OSRAM_A0, OUTPUT);
-	*/
 	// setup the display buses
 	BusConfig();
+
+	// reset display
+	digitalWrite(RST, LOW);
+	delay(10);
+	digitalWrite(RST, HIGH);
+
+	// disable flashing
+	digitalWrite(FL, HIGH);
 }
 
 // the loop function runs over and over again forever
 void loop()
 {
-	// heartbeat
-	digitalWrite(LEDFADER, HIGH);   // turn the LED on (HIGH is the voltage level)
-	delay(1000);              // wait for a second
-	digitalWrite(LEDFADER, LOW);    // turn the LED off by making the voltage LOW
-	delay(1000);              // wait for a second
-
-
-
-	digitalWrite(FL, HIGH);
-
 	// start with 1st digit:
-	AddressBusWrite(0b11111000);
+	AddressBusWrite(address = BASE_ADDRESS);
 
-	// now some junk ASCII data
-	DataBusWrite(37);
+	// now some junk an ASCII message
+	DataBusWrite('H');
+	delay(10);
 
-	delay(500);
+	AddressBusWrite(++address);
 
-	// start with 1st digit:
-	AddressBusWrite(0b11111001);
+	// now some junk an ASCII message
+	DataBusWrite('e');
+	delay(10);
 
-	// now some junk ASCII data
-	DataBusWrite(39);	
-
-	delay(500);
-
-	// start with 1st digit:
-	AddressBusWrite(0b11111000);
+	AddressBusWrite(++address);
 	
-	// now some junk ASCII data
-	DataBusWrite(39);		
+	// now some junk an ASCII message
+	DataBusWrite('l');
+	delay(10);
 
-	delay(500);
-
-	// start with 1st digit:
-	AddressBusWrite(0b11111001);
-
-	// now some junk ASCII data
-	DataBusWrite(37);
-
-	delay(500);
-
-#if 0
+	AddressBusWrite(++address);
+	
+	// now some junk an ASCII message
+	DataBusWrite('l');
+	delay(10);
+	
+	AddressBusWrite(++address);
+	
+	// now some junk an ASCII message
+	DataBusWrite('o');
+	delay(10);
+	
+	AddressBusWrite(++address);
+	
+	// now some junk an ASCII message
+	DataBusWrite('!');
+	delay(10);
+	
+	#if 0
   // if we get a valid byte, format it (TEST)
 	if (Serial.available() > 0)
 	{
@@ -153,6 +139,9 @@ void BusConfig(void)
 	{
 		pinMode(DATA_PINS[i], OUTPUT);
 	}
+
+	pinMode(FL, OUTPUT);
+	pinMode(RST, OUTPUT);
 }
 
 /* ------------------------

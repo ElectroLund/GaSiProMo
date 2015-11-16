@@ -50,3 +50,16 @@ encoded character map
 So I came up with a character array method to do this.  I tested tonight with the serial port debugger to verify correct character parsing.
 
 So far so good.
+
+
+http://www.electrolund.com/2015/11/day-15-display-testing/
+November 15
+
+
+So I have my display working <em>sort of</em>.  It's definitely showing good old ASCII characters.  Here's a quick video of it in action:
+
+https://youtu.be/h9ic9IhN6is
+
+You can see <a href="https://github.com/ElectroLund/GaSiProMo/blob/master/OsRAM_Arduino/OsRAM_Arduino.ino" target="_blank">my code at GitHub</a>.
+
+I'm quickly realizing that I will need a more sophisticated text parser to make this thing usable.  'Cuz sending a character at a time for bit-fiddling pretty much sucks.
