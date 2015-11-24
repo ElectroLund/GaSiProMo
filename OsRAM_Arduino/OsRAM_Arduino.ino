@@ -36,6 +36,7 @@ byte inByte = 0;
 // address counter (must only use A0-A2)
 #define BASE_ADDRESS		0b11111000
 byte address;
+#define CHAR_DELAY		500
 
 // the setup function runs once when you press reset or power the board
 void setup()
@@ -67,42 +68,68 @@ void setup()
 // the loop function runs over and over again forever
 void loop()
 {
+
+	StringWrite("Hello!");
+
+	delay(1500);
+
+	StringWrite("        ");
+
+	delay(1500);
+	
+	StringWrite("TITS");
+
+	StringWrite("        ");
+
+	delay(1500);
+	
+	StringWrite("U-S2k");
+
+	delay(1500);
+	
+	StringWrite("        ");
+
+	delay(1500);
+/*
+	
 	// start with 1st digit:
 	AddressBusWrite(address = BASE_ADDRESS);
 
 	// now some junk an ASCII message
 	DataBusWrite('H');
-	delay(10);
+	delay(CHAR_DELAY);
 
 	AddressBusWrite(++address);
 
 	// now some junk an ASCII message
 	DataBusWrite('e');
-	delay(10);
+	delay(CHAR_DELAY);
 
 	AddressBusWrite(++address);
 	
 	// now some junk an ASCII message
 	DataBusWrite('l');
-	delay(10);
+	delay(CHAR_DELAY);
 
 	AddressBusWrite(++address);
 	
 	// now some junk an ASCII message
 	DataBusWrite('l');
-	delay(10);
+	delay(CHAR_DELAY);
 	
 	AddressBusWrite(++address);
 	
 	// now some junk an ASCII message
 	DataBusWrite('o');
-	delay(10);
+	delay(CHAR_DELAY);
 	
 	AddressBusWrite(++address);
 	
 	// now some junk an ASCII message
 	DataBusWrite('!');
-	delay(10);
+	delay(CHAR_DELAY);
+
+*/
 	
 	#if 0
   // if we get a valid byte, format it (TEST)
@@ -146,49 +173,56 @@ void BusConfig(void)
 
 /* ------------------------
 data bus write function
-data is a hex byte
+input is a hex byte that 
+must be written 1 bit at at time
 ------------------------*/
 void DataBusWrite(byte data)
-{
-	byte bit = 0;
-	
+{	
 	for (int i = 0; i < MAX_DATA_PINS; i++)
 	{
-		// split the data byte into bits
-		bit = data & (1 << i);
-
-		// echo
-		Serial.print("bit: ");
-		Serial.print(i, DEC);
-		Serial.write(bit);
-		Serial.println();
-
 		// write the bus		
-		digitalWrite(DATA_PINS[i], bit);
+		digitalWrite(DATA_PINS[i], bitRead(data, i));
 	}
 }
 
 
 /* ------------------------
 address bus write function
-data is a hex byte
+input is a hex byte that 
+must be written 1 bit at at time
 ------------------------*/
 void AddressBusWrite(byte address)
 {
-	byte bit = 0;
-	
 	for (int i = 0; i < MAX_ADDR_PINS; i++)
 	{
-		// split the data byte into bits
-		bit = address & (1 << i);
-
-		// echo
-		Serial.print("bit: ");
-		Serial.print(i, DEC);
-		Serial.write(bit);
-		Serial.println();
-
 		// write the bus	
-		digitalWrite(ADDR_PINS[i], bit);
+		digitalWrite(ADDR_PINS[i], bitRead(address, i));
 	}
 }
+
+/* ------------------------
+string write function
+input is an ASCII string that
+must be written 1 character at a time
+------------------------*/
+void StringWrite(String message)
+{
+	byte address = BASE_ADDRESS;
+	
+	Serial.println("\nstring length = ");
+	Serial.print(message.length());
+
+	for (int i = 0; i < message.length(); i++, address++)
+	{
+		Serial.println("\ncharacter = ");
+		Serial.print(message.charAt(i));
+
+		// set up the display character
+		AddressBusWrite(address);
+
+		// write the string character to that display character
+		DataBusWrite(message.charAt(i));
+		delay(CHAR_DELAY);
+	}	
+}
+
