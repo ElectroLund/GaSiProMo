@@ -63,3 +63,17 @@ https://youtu.be/h9ic9IhN6is
 You can see <a href="https://github.com/ElectroLund/GaSiProMo/blob/master/OsRAM_Arduino/OsRAM_Arduino.ino" target="_blank">my code at GitHub</a>.
 
 I'm quickly realizing that I will need a more sophisticated text parser to make this thing usable.  'Cuz sending a character at a time for bit-fiddling pretty much sucks.
+
+
+ http://www.electrolund.com/2015/11/day-30-final-day/
+November 30
+I've got most of the bugs ironed out in my display interface, but not all have been squashed in the driver portion.  In other words, the method in which I can input text into the OsRAM is working nicely (I'm using a serial port console), but the nuts and bolts of how strings are sent to the display -- arguably the most important part of this project -- remains broken slightly.
+
+The problem is that I was lazy.  I should have paid more attention to the WR and CE lines for proper data latching into the display at the right times.
+
+Oh well, what can I say?   I got distracted.
+
+But this challenge has been fun.  It's always fun to work under a deadline to see what you can do.  This forced me to learn more about Arduino.  And despite my first impression, I've come to see that it's pretty great.  I especially love the C++ class support.  For instance, its string and bitwise libraries are awesome.  There are things that aren't so great, like the editor.  I had consistent undo (CTRL+Z) wonkiness that scared me (I was afraid of code-eating), so I switched quickly to Notepad++ with a good syntax language profile.
+
+Until next year.
+
